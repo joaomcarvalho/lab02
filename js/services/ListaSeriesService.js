@@ -16,7 +16,6 @@ function ListaSeriesService($http) {
 	*/
 	this.search = function(nome) {
 		var uri = encodeURI(searchUrl.replace(/TITULO/, nome));
-		console.log(uri);
 		return $http.get(uri);
 	}
 

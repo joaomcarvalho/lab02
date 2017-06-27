@@ -1,30 +1,29 @@
 <!DOCTYPE html>
 <html ng-app="app">
 <head>
-  
+  <meta name="viewport" charset="UTF-8" content="width=device-width, initial-scale=1">
   <title>Laboratorio SI 02</title>
   <link rel="stylesheet" type="text/css" href="libs/bootstrap.css">
   
   <!-- Angular Material style sheet -->
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <!-- Bootstrap requires JQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
-    <!-- Bootstrap -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <!-- Angular.js Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-aria.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-messages.min.js"></script>
-    <!-- Angular Material Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.4/angular-material.min.js"></script>
-    <!-- Extra Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
-    <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="style.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- Bootstrap requires JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
+<!-- Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Angular.js Libraries -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-aria.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-messages.min.js"></script>
+<!-- Angular Material Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.4/angular-material.min.js"></script>
+<!-- Extra Libraries -->
+<script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
 
   <script src="js/app.js"></script>
   <script src="js/controllers/ListaSeriesController.js"></script>
@@ -34,75 +33,128 @@
 </head>
 <body ng-controller="listaSeriesCtrl as ctrl">
   <nav class="navbar navbar-inverse">
-    <div class="container-fluid">
+    <div class="container">
       <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Minhas Séries</a>
+           <md-button class="md-raised" href="#perfil" data-toggle="tab">Perfil</md-button>
+           <md-button class="md-raised md-primary" href="#watchlist" data-toggle="tab">WatchList</md-button>       
+       
         </div>
-      <form class="navbar-form navbar-left" data-ng-submit="ctrl.search(searchText)">
+    <div class="navbar-collapse collapse">
+      <form class="navbar-form navbar-right" data-ng-submit="ctrl.search(searchText,$event)">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search" ng-model="searchText">
+                <input type="text" class="form-control" placeholder="Pesquisar" ng-model="searchText" data-target="#pesquisa">
             </div>
-          <button type="submit" class="btn btn-default" >Submit</button>
+          <button type="submit" class="btn btn-warning" 
+          		data-toggle="tab" data-target="#pesquisa"
+          		data-ng-click="ctrl.search(searchText)">Pesquisar</button>
       </form>
+   	</div>
     </div>
   </nav>
+
+ <div class="tab-content">
+  <!-- SEARCH -->
   
-  <md-list-item layout="column"  data-ng-repeat="serie in ctrl.series">
-    <div class="col-lg-4">
-      
-      <img data-ng-if="!hasImagePoster(serie)" class="md-card-image"
-         data-ng-src="{{serie.Poster}}"
-         alt="{{serie.Title}}"
-         data-md-plain-image>
-    <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#mymodal{{$index}}">Sobre</button>
-    </div>
-   <div id="mymodal{{$index}}" class="modal fade" role="dialog">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">{{serie.Title}}</h3>
-              </div>
+  <div id="pesquisa" class="tab-pane">
+  	<div data-ng-repeat="serie in ctrl.series">
+  		<div class="col-lg-3">
+  			<div id="flex">
+  				<div id="sizeCard" class="thumbnail grow">
+  					<img title="{{serie.Title}}" id="imagesize" data-ng-src="{{serie.Poster}}" id="sizeCard">
+  					<p>{{serie.Title}}</p>
+  					<button class="btn btn-success btn-block" 
+  							data-ng-click="ctrl.adicionarAoPerfil($event, serie)">Adicionar ao Perfil
+  					</button>
+  					<button class="btn btn-primary btn-block" 
+  							data-ng-click="ctrl.adicionarAoWatchList($event, serie)">Adicionar ao WatchList
+  					</button>
+  				</div>
+  			</div>
+  		</div>		
+  	</div>
+  </div>
+ 
+  <!-- PERFIL -->
+  <div id="perfil" class="tab-pane fade in active">
+  	<div data-ng-repeat="serie in ctrl.seriesPerfil">
+  		<div class="col-lg-3">
+  			<div id="flex">
+  				<div id="sizeCard" class="thumbnail grow">
+  					<img title="{{serie.Title}}" id="imagesize" data-ng-src="{{serie.Poster}}" id="sizeCard">
+  					<p>{{serie.Title}}</p>
+  					<button class="btn btn-success btn-block" 
+  							data-toggle="modal"
+  							data-target="#modalperfil{{$index}}">Info
+  					</button>
+  					<button class="btn btn-danger btn-block" 
+  							data-ng-click="ctrl.removerDoPerfil($event, serie)">Remover
+  					</button>
+  				</div>
+  			</div>
+  		</div>		
+  		<div id="modalperfil{{$index}}" class="modal fade" role="dialog">
+  			<div class="modal-dialog modal-lg">
+  				<div class="modal-content">
+  					<div class="modal-header">
+  						<button type="button" class="close" data-dismiss="modal">&times;</button>
+  						<h4 class="modal-title text-center">{{serie.Title}}</h4>
+  					</div>
+  					<div class="modal-body">
+  						<div class="row">
+  							<div class="col-md-4">
+  								<img title="{{serie.Title}}" id="imagesize" data-ng-src="{{serie.Poster}}">
+  							</div>
+  							<div class="col-md-8"><p>{{serie.Plot}}</p></div>
+  							<div class="col-md-8">
+  								<p><b>Média no IMDb:</b> {{serie.imdbRating}}</p>
+  								<p><b>Classificação Indicativa:</b> {{serie.Rated}}</p>
+  								<p><b>Minha Avaliação:</b> {{serie.nota}}</p>
+  								<p><b>Último Episódio Visto:</b> {{serie.ultimoEpisodio}}</p>
+  								<div class="input-group input">
+  									<input type="text" class="form-control" placeholder="Nota 0-10" data-ng-model="nota">
+										<div class="input-group-btn">
+											<button class="btn btn-info" type="submit" 
+													data-ng-click="ctrl.setNota($event,serie,nota)">Ok
+											</button>	
+										</div>
+  								</div>
+  								<div class="input-group input">
+  									<input type="text" class="form-control" placeholder="Último Episódio" data-ng-model="lastep">
+										<div class="input-group-btn">
+											<button class="btn btn-info" type="submit" 
+													data-ng-click="ctrl.setUltimoEpisodio(serie,lastep)">Ok
+											</button>	
+  										</div>
+  								</div>
+  						</div>
+  					</div>
+  				</div>
+  			</div>
+  		</div>
+  	</div>
+  </div>
 
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-md-4">
-                    <img id="imagemModal" src="{{serie.Poster}}"></div>
-                </div>
-                <p><b>Sinopse:</b></p>
-                <p>{{serie.Plot}}</p>
-                <p><b>Classificação etária:</b> {{serie.Rated}}</p>
-                <p><b>Média IMDB:</b> {{serie.imdbRating}}</p>
-                <p ng-show="serie.nota != undefined"><b>Minha nota para esta série:</b> {{serie.nota}}</p>
-                <p ng-show="serie.ultimoEpi != undefined"><b>Último episódio assistido desta série:</b> {{serie.ultimoEpi}}</p>
-                <div id="formModal" class="input-group">
-                  <input ng-model="minhaNota" class="form-control" placeholder="Adicionar nota">
-                  <div class="input-group-btn">
-                    <button type="submit" ng-click="adicionaMinhaNota(minhaNota, serie)" class="btn btn-success btn-block"><span class="glyphicon glyphicon-plus"></span></button>
-                  </div>
-                </div>
-                <div id="formModal" class ="input-group">
-                  <input ng-model="ultimoEpi" class="form-control" placeholder="Adicionar último episódio assistido">
-                  <div class="input-group-btn">
-                    <button type="submit" ng-click="adicionaUltimoEpi(ultimoEpi, serie)" class="btn btn-success btn-block"><span class="glyphicon glyphicon-plus"></span></button>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-        </div> <!--Fim Modal--> 
-
-
-   </md-list-item>
-
+ </div>
+<!-- WATCHLIST -->
+ <div id="watchlist" class="tab-pane">
+  	<div data-ng-repeat="serie in ctrl.seriesWatchList">
+  		<div class="col-lg-3">
+  			<div id="flex">
+  				<div id="sizeCard" class="thumbnail grow">
+  					<img title="{{serie.Title}}" id="imagesize" data-ng-src="{{serie.Poster}}" id="sizeCard">
+  					<p>{{serie.Title}}</p>
+  					<button class="btn btn-success btn-block" 
+  							data-ng-click="ctrl.adicionarAoPerfilERemoverWatchList($event, serie)">Adicionar ao Perfil
+  					</button>
+  					<button class="btn btn-danger btn-block" 
+  							data-ng-click="ctrl.removerWatchList(serie)">Remover do WatchList
+  					</button>
+  				</div>
+  			</div>
+  		</div>		
+  	</div>
+  </div>	
+ </div>
   
 </body>
 </html>
